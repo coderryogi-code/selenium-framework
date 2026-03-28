@@ -20,8 +20,6 @@ import com.frameworks.utility.BaseClass;
 
 public class Day7_WebSiteAutomation_Task extends BaseClass {
 
-	private Object element;
-
 	public void CreateOrderId() throws Exception {
 
 		browserLaunch();
@@ -54,17 +52,17 @@ public class Day7_WebSiteAutomation_Task extends BaseClass {
 
 		//Product Search Page
 		System.out.println("Welcome Yogesh");
-
+	
 		//Clearing the Cart
-		//		clearCart(null);
+		clearCart();
 
 
 		//Typing Nuts in the search box and clicking search button
 		//WebElement search = driver.findElement(By.id("search"));
-		WebElement search = findLocatorById("search");
+	//	WebElement search = findLocatorById("search");
 		
 		//search.sendKeys("Nuts");
-		sendKeysElement(search, "Nuts");
+	//	sendKeysElement(search, "Nuts");
 		
 		/*
 		WebElement srchtBtn = driver.findElement(By.xpath("//button[@data-testid='searchbtn']"));
@@ -123,30 +121,39 @@ public class Day7_WebSiteAutomation_Task extends BaseClass {
 		pymtType.selectByVisibleText("Debit Card");
 		System.out.println("Selected: " + pymtType.getFirstSelectedOption().getText());
 
+		*/
+		
 		Thread.sleep(3000);
 
-		driver.close();
+		closeTheWindow();
 		System.out.println("Done");
-		*/
 	}
 
 		 
 
-		public void clearCart(WebDriver driver) throws InterruptedException {
+		public void clearCart() throws InterruptedException {
 
 			// driver.get("https://omrbranch.com/my-cart");
+			Thread.sleep(3000);
 			enterApplicationUrl("https://omrbranch.com/my-cart");
-
+			
+			
 			// Keep removing items until none left
 			while (true) {
-				List<WebElement> removeBtns = driver.findElements(By.cssSelector("a.allinone.close"));
+				//List<WebElement> removeBtns = driver.findElements(By.cssSelector("a.allinone.close"));
+				//List<WebElement> removeBtns = getElements(By.cssSelector("a.allinone.close"));
+				
+				List<WebElement> removeBtns = findElementsByCss("a.allinone.close");
+				System.out.println(removeBtns);
+				
 				if (removeBtns.isEmpty()) {
 					System.out.println("Cart is empty.");
 					break;
 				}
 
 				WebElement btn = removeBtns.get(0); // always take the first one
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+				//((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+				clickButtonJs(btn);
 
 				// small pause so DOM updates before next loop
 				Thread.sleep(500);

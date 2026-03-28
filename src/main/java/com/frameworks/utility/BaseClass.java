@@ -23,7 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseClass extends ExcelUtiles{
 
-	WebDriver driver;
+	public static WebDriver driver;
 	Select select;
 	JavascriptExecutor executor;
 	Actions actions;
@@ -258,6 +258,10 @@ public class BaseClass extends ExcelUtiles{
 		//return new Select(element).isMultiple();
 	}
 	
+	public List<WebElement> findElementsByCss(String locator) {
+	    List<WebElement> list = driver.findElements(By.cssSelector(locator));
+	    return list;
+	}
 
 }
 
