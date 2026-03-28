@@ -1,20 +1,11 @@
 package com.frameworks.MavenProject;
 
-import java.io.IOException;
-import java.time.Duration;
+
 import java.util.List;
-import com.frameworks.utility.*;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.frameworks.utility.BaseClass;
 
@@ -29,7 +20,6 @@ public class Day7_WebSiteAutomation_Task extends BaseClass {
 		enterApplicationUrl("https://omrbranch.com/");
 
 		//driver.manage().window().maximize();
-		maximizeWindow();
 
 		implicitWait(2);
 
@@ -134,32 +124,43 @@ public class Day7_WebSiteAutomation_Task extends BaseClass {
 		public void clearCart() throws InterruptedException {
 
 			// driver.get("https://omrbranch.com/my-cart");
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			enterApplicationUrl("https://omrbranch.com/my-cart");
 			
-			
 			// Keep removing items until none left
-			while (true) {
-				//List<WebElement> removeBtns = driver.findElements(By.cssSelector("a.allinone.close"));
-				//List<WebElement> removeBtns = getElements(By.cssSelector("a.allinone.close"));
-				
-				List<WebElement> removeBtns = findElementsByCss("a.allinone.close");
-				System.out.println(removeBtns);
-				
-				if (removeBtns.isEmpty()) {
-					System.out.println("Cart is empty.");
-					break;
-				}
+//			while (true) {
+//				//List<WebElement> removeBtns = driver.findElements(By.cssSelector("a.allinone.close"));
+//				List<WebElement> removeBtns = findElementsByCss("div.scheduleClose a.allinone.close");
+//				System.out.println(removeBtns);
+//				
+//				if (removeBtns.isEmpty()) {
+//					System.out.println("Cart is empty.");
+//					break;
+//				}
 
-				WebElement btn = removeBtns.get(0); // always take the first one
-				//((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-				clickButtonJs(btn);
+			    By removeBtn = By.cssSelector("div.scheduleClose a.allinone.close"); // ⚠️ replace this
 
-				// small pause so DOM updates before next loop
-				Thread.sleep(500);
+			    // Fetch all remove buttons
+			    List<WebElement> removeButtons = driver.findElements(removeBtn);
+
+			    while (removeButtons.size() > 0) {
+
+			        // Always take first element (DOM changes after click)
+			        WebElement btn = removeButtons.get(0);
+
+			        // Wait until clickable
+			        wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
+
+			        // Wait until that element disappears from DOM
+			        wait.until(ExpectedConditions.stalenessOf(btn));
+
+			        // Re-fetch updated list (VERY IMPORTANT 🔥)
+			        removeButtons = driver.findElements(removeBtn);
+			    }
+
+			    System.out.println("Cart cleared successfully");
 			}
-
-		}
+		
 
 		public static void main(String[] args) throws Exception {
 			Day7_WebSiteAutomation_Task d4 = new Day7_WebSiteAutomation_Task();

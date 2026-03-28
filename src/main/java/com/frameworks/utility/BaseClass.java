@@ -27,6 +27,7 @@ public class BaseClass extends ExcelUtiles{
 	Select select;
 	JavascriptExecutor executor;
 	Actions actions;
+	public WebDriverWait wait;
 
 	public void dragAndDrop(WebElement source, WebElement target) {
 		actions = new Actions(driver);
@@ -121,14 +122,12 @@ public class BaseClass extends ExcelUtiles{
 
 	public void browserLaunch() {
 		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
 	public void enterApplicationUrl(String url) {
 		driver.get(url);
-	}
-
-	public void maximizeWindow() {
-		driver.manage().window().maximize();
 	}
 
 	public void sendKeysElement(WebElement element, String data) {
@@ -261,6 +260,11 @@ public class BaseClass extends ExcelUtiles{
 	public List<WebElement> findElementsByCss(String locator) {
 	    List<WebElement> list = driver.findElements(By.cssSelector(locator));
 	    return list;
+	}
+	
+	public void waitForElementToDisappear(WebElement removeButtons) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    wait.until(ExpectedConditions.stalenessOf(removeButtons));
 	}
 
 }
