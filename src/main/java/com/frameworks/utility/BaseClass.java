@@ -10,8 +10,10 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,7 +29,7 @@ public class BaseClass extends ExcelUtiles{
 	Select select;
 	JavascriptExecutor executor;
 	Actions actions;
-	public WebDriverWait wait;
+	public static WebDriverWait wait;
 
 	public void dragAndDrop(WebElement source, WebElement target) {
 		actions = new Actions(driver);
@@ -39,12 +41,41 @@ public class BaseClass extends ExcelUtiles{
 		driverWait.until(ExpectedConditions.visibilityOf(element));
 	}
 	
+	public WebElement visibilityOfElementbyLocator(By locator) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+
+	public void invisibilityOfElementLocated(By locator) {
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+	}
+
 	public void explicitWaitvisibilityOfElement(String attributeValue) {
 		WebDriverWait driverWait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id(attributeValue)));
 	}
+	
+	public WebElement waitForPresence(By locator) {
 
-	public void implicitWait(int secs) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+	}
+
+	public WebElement waitForElementToBeClickable(By locator) {
+		return wait.until(ExpectedConditions.elementToBeClickable(locator));
+	}
+	
+	public void sendKeysElementEnter(By locator, String value) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    
+	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	    
+	    element.clear();
+	    element.sendKeys(value);
+	    element.sendKeys(Keys.ENTER);
+	}
+
+	public static void implicitWait(int secs) {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(secs));
 	}
 
@@ -87,7 +118,7 @@ public class BaseClass extends ExcelUtiles{
 		}
 		return allOptionsText;
 	}
-	
+
 	//m
 	public List<String> getAllOptionsValue(WebElement element) {
 		List<String> allOptionsValue = new ArrayList<>();
@@ -96,7 +127,7 @@ public class BaseClass extends ExcelUtiles{
 		for (WebElement webElement : options) {
 			String value = webElement.getAttribute("value");
 			if (value != null) {
-			    allOptionsValue.add(value);
+				allOptionsValue.add(value);
 			}
 		}
 		return allOptionsValue;
@@ -118,15 +149,18 @@ public class BaseClass extends ExcelUtiles{
 		visibilityOfElement(element);
 		select = new Select(element);
 		select.selectByValue(attributeValue);
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+	    js.executeScript("arguments[0].dispatchEvent(new Event('change'));", element);
 	}
 
-	public void browserLaunch() {
+	public static void browserLaunch() {
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	public void enterApplicationUrl(String url) {
+	public static void enterApplicationUrl(String url) {
 		driver.get(url);
 	}
 
@@ -172,6 +206,11 @@ public class BaseClass extends ExcelUtiles{
 		return element;
 	}
 
+	public WebElement findLocatorByLinkTxt(String lnktxt) {
+		WebElement element = driver.findElement(By.linkText(lnktxt));
+		return element;
+	}
+
 	public String getApplicationUrl() {
 		String currentUrl = driver.getCurrentUrl();
 		return currentUrl;
@@ -210,45 +249,51 @@ public class BaseClass extends ExcelUtiles{
 	public void clearTextBox(WebElement element) {
 		element.clear();
 	}
-	
+
 	// From here Mine
-	
+
 	public void acceptAlertBox() {
 		driver.switchTo().alert().accept();
 	}
-	
+
 	public void dismissAlertBox() {
 		driver.switchTo().alert().dismiss();
 	}
-	
-	public void closeTheWindow() {
+
+	public static void closeTheWindow() {
 		driver.close();
 	}
-	
+
 	public void clickButtonJs(WebElement element) {
-	    visibilityOfElement(element);
+		visibilityOfElement(element);
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", element);
 	}
 	
+	public void scrollIntoViewJs(WebElement element) {
+		visibilityOfElement(element);
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].scrollIntoView(true);", element);
+	}
+
 	public void switchFrameByIndex(int index) {
 		driver.switchTo().frame(index);
 	}
-	
+
 	public void switchFrameByName(String framename) {
 		driver.switchTo().frame(framename);
 	}
-	
+
 	public void switchFrameByElement(WebElement element) {
 		driver.switchTo().frame(element);
 	}
-	
+
 	public String firstSelectedOption(WebElement element) {
 		Select select = new Select(element);
 		String text = select.getFirstSelectedOption().getText();
 		return text;
 	}
-	
+
 	public boolean checkMultiSelectOption(WebElement element) {
 		Select select = new Select(element);
 		boolean multiple = select.isMultiple();
@@ -256,15 +301,15 @@ public class BaseClass extends ExcelUtiles{
 		//or you can write in one statement
 		//return new Select(element).isMultiple();
 	}
-	
+
 	public List<WebElement> findElementsByCss(String locator) {
-	    List<WebElement> list = driver.findElements(By.cssSelector(locator));
-	    return list;
+		List<WebElement> list = driver.findElements(By.cssSelector(locator));
+		return list;
 	}
-	
+
 	public void waitForElementToDisappear(WebElement removeButtons) {
-	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	    wait.until(ExpectedConditions.stalenessOf(removeButtons));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.stalenessOf(removeButtons));
 	}
 
 }
