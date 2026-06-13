@@ -67,8 +67,8 @@ post {
     always {
 
         cucumber buildStatus: 'UNSTABLE',
-        fileIncludePattern: '**/target/s.json',
-        sortingMethod: 'ALPHABETICAL'
+fileIncludePattern: '**/target/output.json',
+            sortingMethod: 'ALPHABETICAL'
     }
 
     success {
