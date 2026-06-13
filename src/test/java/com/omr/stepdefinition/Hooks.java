@@ -2,7 +2,7 @@ package com.omr.stepdefinition;
 
 import org.openqa.selenium.TakesScreenshot;
 
-import com.frameworks.utility.BaseClass;
+import utilities.BaseClass;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;

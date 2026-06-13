@@ -21,8 +21,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.BaseClass;
 
-import com.*;
 
 
 public class BaseClass extends ExcelUtiles{

@@ -2,7 +2,8 @@ package com.omr.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import com.frameworks.utility.BaseClass;
+
+import utilities.BaseClass;
 
 public class LoginPage extends BaseClass {
 

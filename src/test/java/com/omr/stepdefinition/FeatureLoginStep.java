@@ -3,7 +3,8 @@ package com.omr.stepdefinition;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import com.frameworks.utility.BaseClass;
+import utilities.BaseClass;
+
 import com.omr.pageobjects.LoginPage;
 
 import io.cucumber.java.en.*;

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.openqa.selenium.WebElement;
 
-import com.frameworks.utility.BaseClass;
+import utilities.BaseClass;
 
 import io.cucumber.java.en.*;
 
