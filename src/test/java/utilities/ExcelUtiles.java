@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtiles {
 	public void createCellData(String sheetName, int rownum, int cellnum, String data) throws IOException {
-		File file = new File("/Users/yogeshpraveen/Testing/Frameworks/TestData/Test1.xlsx");
+		File file = new File("/Users/yogeshpraveen/Testing/Cucumber/TestData/Test1.xlsx");
 		FileInputStream fileInputStream = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(fileInputStream);
 		Sheet sheet = workbook.getSheet(sheetName);
@@ -28,7 +28,7 @@ public class ExcelUtiles {
 
 	public void updateCellData(String sheetName, int rownum, int cellnum, String oldData, String newData) throws IOException {
 
-		File file = new File("/Users/yogeshpraveen/Testing/Frameworks/TestData/Test1.xlsx");
+		File file = new File("/Users/yogeshpraveen/Testing/Cucumber/TestData/Test1.xlsx");
 		FileInputStream fileInputStream = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(fileInputStream);
 		Sheet sheet = workbook.getSheet(sheetName);
@@ -46,7 +46,7 @@ public class ExcelUtiles {
 
 	public String getCellData(String sheetName, int rownum, int cellnum) throws IOException {
 
-		File file = new File("/Users/yogeshpraveen/Testing/Frameworks/TestData/Test1.xlsx");
+		File file = new File("/Users/yogeshpraveen/Testing/Cucumber/TestData/Test1.xlsx");
 		FileInputStream fileInputStream = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(fileInputStream);
 		Sheet sheet = workbook.getSheet(sheetName);
