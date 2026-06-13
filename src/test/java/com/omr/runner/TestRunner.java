@@ -21,6 +21,6 @@ public class TestRunner {
 	
 	@AfterClass
 	  public static void afterClass() {
-	    Reporting.generateJvmReport("/Users/yogeshpraveen/Testing/Cucumber/target/output.json");
+	    Reporting.generateJvmReport("target/output.json");
 	  }
 }
